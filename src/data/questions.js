@@ -148,6 +148,20 @@ export const definitionCategories = [
       q('Yard Limits', 'A portion of single main track between yard limit boards, as specified by special instruction.'),
     ],
   },
+  {
+    category: 'Trains',
+    questions: [
+      q('Camp Car', 'Any on-track vehicle, except a wreck train, that is used to house railroad or contract employees.'),
+      q('Extra Train', 'A train not authorized by a timetable schedule. It must be designated as:\nPassenger Extra – for passenger train extra\nWork Extra – for work train extra\nTrack Car Extra – for track car extra\nExtra – For any other extra train except passenger extra, work extra or track car extra.'),
+      q('Passenger Train', 'A train carrying revenue passengers.'),
+      q('Push-Pull Train', 'A train consisting of a bi-level cab control car at one end and a diesel or dual mode locomotive at the opposite end.'),
+      q('Regular Train', 'A train authorized by a timetable schedule.'),
+      q('Superior Train', 'A train having precedence over another train.'),
+      q('Train', 'An engine or more than one engine coupled, with or without cars, displaying markers.'),
+      q('Train of Superior Direction', 'A train given precedence in the direction specified as between opposing regular trains.'),
+      q('Train of Superior Right', 'A train given precedence by Form L.'),
+    ],
+  },
 ];
 
 const sig = (file) => `${import.meta.env.BASE_URL}signals/${file}`;

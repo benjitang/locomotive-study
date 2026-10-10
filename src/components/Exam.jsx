@@ -91,7 +91,7 @@ export default function Exam({ type, random, customQuestions, onHome, onRetake }
                 />
                 {submitted && !auto && (
                   <div className="feedback">
-                    <div><strong>Correct answer:</strong> {q.answer}</div>
+                    <div className="correct-answer"><strong>Correct answer:</strong> {q.answer}</div>
                     <label className="override">
                       <input type="checkbox" checked={overridden} onChange={() => toggleOverride(q.id)} />
                       Mark as correct (e.g. spelling mistake)
