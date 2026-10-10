@@ -58,6 +58,7 @@ After submitting:
 - commas and periods
 - spaces
 - em dashes (—), en dashes (–) and hyphens (-) count as the same
+- curly quotes (“ ”) and straight quotes (") count as the same
 
 So `not exceeding 30 mph` matches `Not exceeding 30 MPH.`, but `Approach` does **not** match `Approach Medium`.
 
@@ -164,4 +165,4 @@ alias locomotive-study="$HOME/Code/personal/locomotive-study/bin/locomotive-stud
 - **Signal images:** put image files in `public/signals/` and reference them with `sig('your-file.png')` in `questions.js`.
 - No ids needed — the app numbers built-in questions automatically.
 
-The current built-in questions are **placeholders** and may not match the official LIRR rulebook wording. Replace them with your real study material.
+The built-in definitions and signals are transcribed from the LIRR study sheets. Signal images are cropped from the sheets into `public/signals/<category>/`, one image per question.
