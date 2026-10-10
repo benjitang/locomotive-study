@@ -1,6 +1,14 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { getCategories } from '../storage.js';
 import { isCorrect } from '../grading.js';
+
+function formatTime(totalSeconds) {
+  const h = Math.floor(totalSeconds / 3600);
+  const m = Math.floor((totalSeconds % 3600) / 60);
+  const s = totalSeconds % 60;
+  const pad = (n) => String(n).padStart(2, '0');
+  return h > 0 ? `${h}:${pad(m)}:${pad(s)}` : `${pad(m)}:${pad(s)}`;
+}
 
 function shuffle(items) {
   const a = [...items];
@@ -11,19 +19,48 @@ function shuffle(items) {
   return a;
 }
 
-export default function Exam({ type, random, customQuestions, onHome, onRetake }) {
+const MODE_LABELS = { ordered: 'Ordered', random: 'Random', practice: 'Practice Test' };
+
+// mode: 'ordered' (grouped with headings), 'random' (all shuffled, no headings),
+// or 'practice' (shuffled, no headings, limited to `limit` questions).
+export default function Exam({ type, mode, limit, customQuestions, onHome, onRetake }) {
   // Sections are fixed for the life of this exam (re-shuffled on retake).
   const sections = useMemo(() => {
     const groups = getCategories(type, customQuestions);
-    return random
-      ? [{ category: null, questions: shuffle(groups.flatMap((g) => g.questions)) }]
-      : groups;
+    if (mode === 'ordered') return groups;
+    const shuffled = shuffle(groups.flatMap((g) => g.questions));
+    return [{ category: null, questions: mode === 'practice' ? shuffled.slice(0, limit) : shuffled }];
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const allQuestions = sections.flatMap((s) => s.questions);
 
   const [responses, setResponses] = useState({});
   const [submitted, setSubmitted] = useState(false);
+  const [startTime] = useState(() => Date.now());
+  const [elapsed, setElapsed] = useState(0);
+
+  // Timer ticks until the exam is submitted; it starts over whenever the exam is re-mounted.
+  useEffect(() => {
+    if (submitted) return;
+    const tick = () => setElapsed(Math.floor((Date.now() - startTime) / 1000));
+    const interval = setInterval(tick, 1000);
+    return () => clearInterval(interval);
+  }, [submitted, startTime]);
+
+  // Warn before closing or reloading the tab mid-exam.
+  useEffect(() => {
+    if (submitted) return;
+    const warn = (e) => e.preventDefault();
+    window.addEventListener('beforeunload', warn);
+    return () => window.removeEventListener('beforeunload', warn);
+  }, [submitted]);
+
+  const leave = () => {
+    const message = submitted
+      ? 'Leave this test? Your results will not be saved.'
+      : 'Leave this test? Your answers and timer will be lost.';
+    if (window.confirm(message)) onHome();
+  };
   const [overrides, setOverrides] = useState(() => new Set());
 
   const autoCorrect = (q) => isCorrect(responses[q.id], q.answer);
@@ -34,6 +71,7 @@ export default function Exam({ type, random, customQuestions, onHome, onRetake }
   const submit = () => {
     const blank = allQuestions.filter((q) => !(responses[q.id] ?? '').trim()).length;
     if (blank && !window.confirm(`You left ${blank} question${blank > 1 ? 's' : ''} blank. Submit anyway?`)) return;
+    setElapsed(Math.floor((Date.now() - startTime) / 1000));
     setSubmitted(true);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -45,13 +83,18 @@ export default function Exam({ type, random, customQuestions, onHome, onRetake }
       return next;
     });
 
-  const title = `${type === 'definitions' ? 'Definitions' : 'Signals'} — ${random ? 'Random' : 'Ordered'}`;
+  const title = `${type === 'definitions' ? 'Definitions' : 'Signals'} — ${MODE_LABELS[mode]}`;
   let number = 0;
 
   return (
     <main>
       <header className="page-header exam-header">
-        <button className="link" onClick={onHome}>← Home</button>
+        <div className="exam-topbar">
+          <button className="link" onClick={leave}>← Home</button>
+          <span className={`timer ${submitted ? 'stopped' : ''}`} aria-label="Elapsed time">
+            ⏱ {formatTime(elapsed)}
+          </span>
+        </div>
         <h1>{title}</h1>
         {submitted && (
           <div className={`score ${percent >= 80 ? 'pass' : 'fail'}`}>
@@ -110,7 +153,7 @@ export default function Exam({ type, random, customQuestions, onHome, onRetake }
         ) : (
           <>
             <button onClick={onRetake}>Retake</button>
-            <button className="secondary" onClick={onHome}>Home</button>
+            <button className="secondary" onClick={leave}>Home</button>
           </>
         )}
       </div>

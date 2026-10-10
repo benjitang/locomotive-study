@@ -30,14 +30,16 @@ Requires [Node.js](https://nodejs.org/) 18 or newer.
 
 ### 1. Pick a practice test
 
-The home screen has four options:
+The home screen has a **Definitions** section and a **Signals** section, each with four options:
 
 | Option | What it does | Use it for |
 | --- | --- | --- |
-| **Definitions — Ordered** | Questions grouped under category headings, always in the same order | Learning the material and seeing how terms connect |
-| **Definitions — Random** | All questions shuffled, no headings | Simulating the real exam |
-| **Signals — Ordered** | Signals grouped under category headings (e.g. Wayside vs. Cab Signals) | Learning the signals family by family |
-| **Signals — Random** | All signals shuffled, no headings | Simulating the real exam |
+| **Practice Test** | A random set of questions (40 by default), no headings | Simulating the real exam |
+| **Random** | Every question shuffled, no headings | Drilling the full set |
+| **Ordered** | Every question grouped under category headings, always in the same order | Learning the material and seeing how terms connect |
+| **Answer Key** | Every question with its answer, by category. Nothing to fill in | Reading and reviewing |
+
+**Changing the practice test length:** use the **Practice test length** box on the home screen, which has a separate number for Definitions and Signals. Your choice is remembered in this browser. If the number is bigger than the number of questions available, the test uses all of them.
 
 ### 2. Answer the questions
 

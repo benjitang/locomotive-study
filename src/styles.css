@@ -115,3 +115,15 @@ input, textarea {
 .added-info { flex: 1; display: flex; flex-direction: column; min-width: 0; }
 .thumb { width: 48px; height: 64px; object-fit: contain; border-radius: 4px; }
 .correct-answer { white-space: pre-line; }
+.exam-topbar { display: flex; justify-content: space-between; align-items: center; }
+.timer {
+  font-variant-numeric: tabular-nums; font-weight: 600; font-size: 1.1rem;
+  padding: 4px 12px; border-radius: 999px; border: 1px solid var(--border); background: var(--card);
+}
+.timer.stopped { color: var(--muted); }
+.home-section .category-heading { margin-top: 24px; }
+.key-card { border-style: dashed; }
+.settings { margin-top: 28px; }
+.settings h2 { margin: 0 0 4px; font-size: 1.1rem; }
+.settings-row { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 12px; }
+.settings-row label { display: flex; flex-direction: column; gap: 4px; font-weight: 500; width: 160px; }

@@ -61,3 +61,23 @@ export function readImageFile(file, maxSize = 900) {
     reader.readAsDataURL(file);
   });
 }
+
+// Number of questions in a practice test, per type.
+const SETTINGS_KEY = 'locomotive-study:practice-sizes';
+export const DEFAULT_PRACTICE_SIZES = { definitions: 40, signals: 40 };
+
+export function loadPracticeSizes() {
+  try {
+    return { ...DEFAULT_PRACTICE_SIZES, ...JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}') };
+  } catch {
+    return { ...DEFAULT_PRACTICE_SIZES };
+  }
+}
+
+export function savePracticeSizes(sizes) {
+  try {
+    localStorage.setItem(SETTINGS_KEY, JSON.stringify(sizes));
+  } catch {
+    // Not critical — the setting just won't be remembered.
+  }
+}
