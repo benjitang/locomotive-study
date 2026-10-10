@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Starts the Locomotive Study app from anywhere. Symlink this into a directory on your PATH.
+set -e
+SCRIPT="$(readlink -f "${BASH_SOURCE[0]}")"
+APP_DIR="$(dirname "$(dirname "$SCRIPT")")"
+cd "$APP_DIR"
+
+if [ ! -d node_modules ]; then
+  echo "Installing dependencies (first run only)..."
+  npm install
+fi
+
+echo "Starting Locomotive Study — ctrl+click the Local link below to open it. Ctrl+C to stop."
+exec npm run dev --silent -- "$@"
