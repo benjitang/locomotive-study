@@ -21,9 +21,11 @@ export function saveCustomQuestions(questions) {
 // category are appended to it; new categories are appended at the end.
 export function getCategories(type, customQuestions) {
   const builtIn = type === 'definitions' ? definitionCategories : signalCategories;
+  // Built-in questions are numbered automatically (e.g. "definitions-3").
+  let n = 0;
   const groups = builtIn.map((g) => ({
     category: g.category,
-    questions: g.questions.map((q) => ({ ...q, type })),
+    questions: g.questions.map((q) => ({ ...q, type, id: `${type}-${++n}` })),
   }));
   for (const q of customQuestions.filter((c) => c.type === type)) {
     let group = groups.find((g) => g.category.toLowerCase() === q.category.toLowerCase());

@@ -160,6 +160,6 @@ alias locomotive-study="$HOME/Code/personal/locomotive-study/bin/locomotive-stud
 
 - **Definitions and signals:** `src/data/questions.js`. Each category is a `{ category, questions: [...] }` block. Categories and questions appear in ordered mode in the order they're written.
 - **Signal images:** put image files in `public/signals/` and reference them with `sig('your-file.png')` in `questions.js`.
-- Every question needs a unique `id`.
+- No ids needed — the app numbers built-in questions automatically.
 
 The current built-in questions are **placeholders** and may not match the official LIRR rulebook wording. Replace them with your real study material.
